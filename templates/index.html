@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Compare documents · Document Compare{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>Compare documents</h1>
+  <p>Upload a master and child PDF or Word document (.docx). Files are processed for this request and are not retained.</p>
+  <form method="post" enctype="multipart/form-data" class="upload-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="master_file">Master document</label>
+    <input id="master_file" name="master_file" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required>
+    <label for="child_file">Child document</label>
+    <input id="child_file" name="child_file" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required>
+    <button class="button" type="submit">Compare</button>
+  </form>
+</section>
+{% if differences is not none %}
+<section class="panel results">
+  <h2>Comparison results</h2>
+  <p class="muted">{{ master_name }} (master) compared with {{ child_name }} (child)</p>
+  <p><strong>{{ differences|length }}</strong> difference{% if differences|length != 1 %}s{% endif %} found.</p>
+  <p class="muted">Whitespace is shown with visible markers: ␠ space, ⇥ tab, ↵ line break, ⍽ non-breaking space. Locations are based on extracted text; PDF line and column positions may differ from the original page layout.</p>
+  {% if differences %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Master</th><th>At (master)</th><th>Master context</th><th>Child</th><th>At (child)</th><th>Child context</th><th>Master formatting</th><th>Child formatting</th></tr></thead>
+      <tbody>
+      {% for difference in differences %}
+        <tr>
+          <td>{{ difference.kind }}</td>
+          <td class="document-text">{{ difference.master }}</td>
+          <td>{{ difference.master_location }}</td>
+          <td class="document-text">{{ difference.master_context }}</td>
+          <td class="document-text">{{ difference.child }}</td>
+          <td>{{ difference.child_location }}</td>
+          <td class="document-text">{{ difference.child_context }}</td>
+          <td>{{ difference.master_style }}</td>
+          <td>{{ difference.child_style }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p class="success-text">No differences found.</p>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

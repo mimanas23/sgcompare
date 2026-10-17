@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Document Compare{% endblock %}
+{% block content %}
+<section class="panel narrow">
+  <h1>Sign in</h1>
+  <p>Use the account provided by your administrator.</p>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <label for="username">{{ form.username.label.text }}</label>
+    {{ form.username(id="username", autocomplete="username") }}
+    {% for error in form.username.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+    <label for="password">{{ form.password.label.text }}</label>
+    {{ form.password(id="password", autocomplete="current-password") }}
+    {% for error in form.password.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+    {{ form.submit(class_="button") }}
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Administration · Document Compare{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>Administration</h1>
+  <p>Create accounts for end users. Passwords are stored as one-way hashes; they cannot be viewed here.</p>
+  <form method="post" class="admin-form">
+    {{ form.hidden_tag() }}
+    <label for="username">{{ form.username.label.text }}</label>
+    {{ form.username(id="username", autocomplete="off") }}
+    {% for error in form.username.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+    <label for="password">{{ form.password.label.text }}</label>
+    {{ form.password(id="password", autocomplete="new-password") }}
+    <small>Use at least 12 characters; give the user their temporary password securely.</small>
+    {% for error in form.password.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+    <label class="checkbox">{{ form.is_admin() }} Grant administrator access</label>
+    {{ form.submit(class_="button") }}
+  </form>
+</section>
+<section class="panel">
+  <h2>Accounts</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Username</th><th>Role</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for user in users %}
+        <tr><td>{{ user.username }}</td><td>{{ "Administrator" if user.is_admin else "User" }}</td><td>{{ "Active" if user.is_active else "Disabled" }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
