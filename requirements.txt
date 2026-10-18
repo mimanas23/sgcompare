@@ -4,3 +4,11 @@ Flask-WTF>=1.2,<2.0
 PyMuPDF>=1.24,<2.0
 python-docx>=1.1,<2.0
 gunicorn>=22.0,<24.0
+PyPDF2
+reportlab
+pdfplumber
+pypdfium2
+pypdf
+reportlab
+opencv-python-headless
+numpy
