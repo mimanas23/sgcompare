@@ -219,13 +219,13 @@ def create_app():
             abort(404)
         response = send_file(output_path, as_attachment=True, download_name="child_highlighted.pdf")
 
-        def remove_result_folder():
-            try:
-                shutil.rmtree(os.path.dirname(output_path))
-            except OSError:
-                app.logger.exception("Failed to remove completed result folder for run %s", run_id)
+        #def remove_result_folder():
+        #    try:
+        #        shutil.rmtree(os.path.dirname(output_path))
+        #    except OSError:
+        #        app.logger.exception("Failed to remove completed result folder for run %s", run_id)
 
-        response.call_on_close(remove_result_folder)
+        #response.call_on_close(remove_result_folder)
         return response
 
 
